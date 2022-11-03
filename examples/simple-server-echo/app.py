@@ -42,6 +42,27 @@ if channel_access_token is None:
 line_bot_api = LineBotApi(channel_access_token)
 parser = WebhookParser(channel_secret)
 
+@parser.add(MessageEvent, message=TextMessage)
+def handle_message(event):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=event.message.text))
+    print(TextSendMessage)
+    profile = line_bot_api.get_profile(user_id)
+    display_name = profile.display_name
+    user_id = profile.user_id
+    picture_url = profile.picture_url
+    status_message = profile.status_message
+
+    if user_id == BOT_ID:
+        return
+    if user_id != BOT_ID:
+        replymessage = talk_api(status_TextSendMessagemessage)
+        line_bot_api.reply_message(
+            reply_token, TextSendMessage(text=replymessage))
+    else:
+        return
+    
 
 def application(environ, start_response):
     # check request path
